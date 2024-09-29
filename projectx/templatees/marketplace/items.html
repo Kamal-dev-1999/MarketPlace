@@ -1,0 +1,52 @@
+{% extends 'marketplace/base.html' %}
+
+{% block title %}Items in Category{% endblock %}
+{% load static %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Items in Selected Category</h2>
+
+        <div class="grid grid-cols-3 gap-3">
+            {% if items %}
+                {% for item in items %}
+                    <div class="hover:shadow-lg transition-shadow duration-300 ease-in-out">
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div class="relative h-48 w-full overflow-hidden rounded-t-xl">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" class="w-full h-full object-cover" alt="{{ item.name }}">
+                                {% else %}
+                                    <img src="{% static 'item_images/default-image.jpg' %}" class="w-full h-full object-cover" alt="Default Image">
+                                {% endif %}
+                            </div>
+
+                            <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{ item.name }}</h2>
+                                <p class="text-gray-500">Price: {{ item.price }}</p>
+                                <p class="text-gray-500">{{ item.description|truncatewords:10 }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No items found in this category.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-6 text-center">
+        <a href="{% url 'item:browse' %}" class="px-4 py-2 bg-teal-500 hover:bg-teal-700 text-white rounded-lg">Back to All Categories</a>
+    </div>
+
+    {% else %}
+    <div class="p-6 bg-gray-100 rounded-xl text-center">
+        <h2 class="text-2xl font-semibold mb-6">Please Log in or Register</h2>
+        <p class="text-gray-600">You need to log in or create an account to view items in this category.</p>
+        <div class="mt-6">
+            <a href="{% url 'core:login' %}" class="inline-block px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl hover:bg-blue-600">Log In</a>
+            <a href="{% url 'core:signup' %}" class="inline-block ml-4 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl hover:bg-green-600">Register</a>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

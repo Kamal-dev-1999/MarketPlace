@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Records</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Include your CSS file for styling -->
+</head>
+<body>
+    <div class="container">
+        <h1>User Records</h1>
+        
+        <!-- Table to display user records -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Address</th>
+                    <th>Contact Number</th>
+                    <th>Profile Image</th>
+                    <th>Bio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.dob }}</td>
+                        <td>{{ user.address }}</td>
+                        <td>{{ user.contact_number }}</td>
+                        <td>
+                            {% if user.profile_img %}
+                                <img src="{{ user.profile_img.url }}" alt="Profile Image" class="profile-img">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                        </td>
+                        <td>{{ user.Bio }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No user records found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.profile-img {
+    width: 100px;
+    height: auto;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+    </style>
+</body>
+</html>

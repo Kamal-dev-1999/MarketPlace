@@ -1,0 +1,78 @@
+{% extends 'marketplace/base.html' %}
+{% load static %}
+{% block title %}Browse Items{% endblock %}
+
+{% block content %}
+<div class="pb-6 grid grid-cols-1 md:grid-cols-4 gap-6 bg-gray-100">
+
+    <!-- Mobile/Tablet Sidebar Toggle Button -->
+    <div class="block md:hidden mb-4">
+        <button id="toggle-sidebar" class="py-4 px-8 text-lg bg-teal-600 hover:bg-teal-700 text-white rounded-lg w-full transition duration-300 ease-in-out">
+            Toggle Browse Options
+        </button>
+    </div>
+
+    <!-- Sidebar: Browse Options -->
+    <div id="sidebar" class="col-span-1 hidden md:block bg-white hover:shadow-lg md:rounded-xl p-6 transition duration-300 ease-in-out">
+        <h3 class="text-xl font-semibold mb-4 text-teal-600">Browse Options</h3>
+        <form method="GET" action="{% url 'item:browse' %}">
+            <input name="query" class="w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4" type="text" value="{{ query }}" placeholder="Search for a name or description...">
+
+            <select name="category" class="w-full py-3 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4">
+                <option value="0">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == category_id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button class="w-full py-4 text-lg bg-teal-500 hover:bg-teal-600 text-white rounded-lg transition duration-300 ease-in-out">Search</button>
+        </form>
+
+        <hr class="my-6">
+
+        <p class="font-semibold text-teal-600 mb-4">Clear Filters</p>
+        <a href="{% url 'item:browse' %}" class="block py-4 px-8 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-lg transition duration-300 ease-in-out text-center">Clear</a>
+    </div>
+
+    <!-- Items Section -->
+    <div class="col-span-3">
+        <h2 class="text-2xl font-semibold mb-6 text-center text-teal-600">Available Items</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in items %}
+            <div class="bg-white hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden">
+                <a href="{% url 'item:detail' item.id %}">
+                    {% if item.image %}
+                    <div>
+                        <img src="{{ item.image.url }}" class="rounded-t-lg w-full h-48 object-cover">
+                    </div>
+                    {% else %}
+                    <div class="bg-gray-200 rounded-t-lg flex items-center justify-center h-48">
+                        <img src="{% static 'item_images/default-image.jpg' %}" class="w-24 h-24">
+                    </div>
+                    {% endif %}
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-teal-700">{{ item.name }}</h2>
+                        <p class="text-gray-500 mt-2">Price: ${{ item.price }}</p>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p class="text-gray-600 col-span-full text-center">No items found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Sidebar Toggle -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggleButton = document.getElementById('toggle-sidebar');
+        var sidebar = document.getElementById('sidebar');
+
+        toggleButton.addEventListener('click', function () {
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('block');
+        });
+    });
+</script>
+{% endblock %}

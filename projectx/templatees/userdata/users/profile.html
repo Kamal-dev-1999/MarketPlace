@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Form</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Include your CSS file for styling -->
+</head>
+<body>
+    {% if not profile_exists %}
+    <h1>Update Your Profile</h1>
+    <form action="{% url 'profile-detail' %}" method="POST" enctype="multipart/form-data">
+
+
+        {% csrf_token %} <!-- Include CSRF token for security -->
+
+        <!-- Assuming 'user' is not included in the form directly and handled in the view -->
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Email address" required><br><br>
+
+        <label for="full_name">Full Name:</label>
+        <input type="text" id="full_name" name="full_name" placeholder="Full Name" required><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" placeholder="Date of Birth" required><br><br>
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" placeholder="Address" required></textarea><br><br>
+
+        <label for="contact_number">Contact Number:</label>
+        <input type="text" id="contact_number" name="contact_number" placeholder="Contact Number" required><br><br>
+
+        <label for="profile_img">Profile Image:</label>
+        <input type="file" id="profile_img" name="profile_img"><br><br>
+
+        <label for="Bio">Bio:</label>
+        <textarea id="Bio" name="bio" placeholder="Write something about yourself"></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    {% else %}
+        <p>You have already submitted your profile. <a href="{% url 'homepage' %}">Go to the homepage</a>.</p>
+    {% endif %}
+</body>
+</html>

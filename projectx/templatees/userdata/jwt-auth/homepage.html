@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="#">MyApp</a>
+            </div>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="{% url 'userprofile' %}">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <form action="{% url 'logoutuser' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-button">Logout</button>
+                        </form>
+                        <a href="{% url 'delete-user-confirmation' %}">Delete user</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to the Homepage</h1>
+        <p>Hello, {{ user.name }}! This is your homepage.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<!-- delete_account.html -->
+<h2>Are you sure you want to delete your account?</h2>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete my account</button>
+    <a href="{% url 'homepage' %}">Cancel</a>
+</form>
